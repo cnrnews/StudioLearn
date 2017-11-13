@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        release {
+            keyAlias 'xinghui'
+            keyPassword 'xh2020'
+            storeFile file('./keystore/xinghui.jks')
+            storePassword 'xh2020'
+        }
+        debug{
+
+        }
+    }
+    buildTypes {
+        release {
+            //开启混淆
+            minifyEnabled true
+            //zip优化
+            zipAlignEnabled true
+            //去除无用资源
+            shrinkResources true
+            signingConfig signingConfigs.release
+            //混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/layouts/main',
+                    'src/main/res/layouts/register',
+                    'src/main/res/layouts',
+                    'src/main/res'
+            ]
+        }
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile rootProject.ext.dependencies["appcompat-v7"]
+    testCompile 'junit:junit:4.12'
+    compile rootProject.ext.dependencies["matisse"]
+    compile rootProject.ext.dependencies["glide"]
+    compile rootProject.ext.dependencies["circleimageview"]
+    compile rootProject.ext.dependencies["bottom-navigation-bar"]
+}
